@@ -8,10 +8,10 @@ const rl = readline.createInterface({
 let counter = 0;
 
 rl.on('line', (line) => {
-  const triangle = line.replace(/([\s]+)/g, ' ').split(' ').slice(1);
-  if (parseInt(triangle[0]) + parseInt(triangle[1]) > parseInt(triangle[2])) {
-    if (parseInt(triangle[0]) + parseInt(triangle[2]) > parseInt(triangle[1])) {
-      if (parseInt(triangle[1]) + parseInt(triangle[2]) > parseInt(triangle[0])) {
+  const [a, b, c ] = line.replace(/([\s]+)/g, ' ').split(' ').slice(1);
+  if ((+a) + (+b) > +c) {
+    if ((+a) + (+c) > +b) {
+      if ((+b) + (+c) > +a) {
         counter += 1
       }
     }
