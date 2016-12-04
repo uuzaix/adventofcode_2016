@@ -1,20 +1,30 @@
-const readline = require('readline');
+const { readInput, broadcast } = require('./helper_funcions.js')
 
-const rl = readline.createInterface({
-  input: process.stdin,
-  output: process.stdout
-});
+function format(line) {
+  return line.trim().split(/\s+/).map(val => parseInt(val))
+}
 
-let counter = 0;
+function part1(data) {
+  const triangles = data.filter(([a, b, c]) => {
+    return a + b > c && a + c > b && b + c > a
+  });
+  console.log("Part 1: " + triangles.length);
+}
 
-rl.on('line', (line) => {
-  const [a, b, c ] = line.replace(/([\s]+)/g, ' ').split(' ').slice(1);
-  if ((+a) + (+b) > +c) {
-    if ((+a) + (+c) > +b) {
-      if ((+b) + (+c) > +a) {
-        counter += 1
+function part2(data) {
+  let counter = 0;
+  for (let i = 0; i < data.length - 2; i += 3) {
+    for (let j = 0; j < 3; j++) {
+      if (data[i][j] + data[i + 1][j] > data[i + 2][j]) {
+        if (data[i + 1][j] + data[i + 2][j] > data[i][j]) {
+          if (data[i][j] + data[i + 2][j] > data[i + 1][j]) {
+            counter += 1;
+          }
+        }
       }
     }
   }
-  console.log(counter);
-});
+  console.log("Part 2: " + counter);
+}
+
+readInput(format, broadcast(part1, part2));
