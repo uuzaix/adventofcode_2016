@@ -1,3 +1,4 @@
+const _ = require('lodash');
 const { readInput, broadcast } = require('./helper_funcions.js')
 
 function format(line) {
@@ -17,12 +18,13 @@ function part1(data) {
 
 function part2(data) {
   let counter = 0;
-  let data_modified = [];
-  for (let i = 0; i < data.length - 2; i += 3) {
-    for (let j = 0; j < 3; j++) {
-      data_modified.push([data[i][j], data[i + 1][j], data[i + 2][j]])
-    }
-  }
+
+  const data_modified = _.flatten(data[0].map((col, i) => {
+    return _.chunk(data.map(row => {
+      return row[i]
+    }), 3)
+  }));
+
   checkTriangles(data_modified, "Part 2: ");
 }
 
