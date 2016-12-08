@@ -17,15 +17,16 @@ function part1(data) {
 }
 
 function part2(data) {
-  let counter = 0;
-
-  const data_modified = _.flatten(data[0].map((col, i) => {
-    return _.chunk(data.map(row => {
-      return row[i]
-    }), 3)
-  }));
-
+  const data_modified = _.chunk(_.flatten(transpose(data)), 3)
   checkTriangles(data_modified, "Part 2: ");
+}
+
+function transpose(array) {
+ return array[0].map((col, i) => {
+    return array.map(row => {
+      return row[i]
+    })
+  });
 }
 
 readInput(format, broadcast(part1, part2));
