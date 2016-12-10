@@ -4,7 +4,7 @@ function format(line) {
   return line.split(/\[|\]/);
 }
 
-function hasRepetition(line) {
+function hasAbba(line) {
   const rep = line.match(/(.)(.)\2\1/);
   if (rep !== null && rep[1] !== rep[2]) {
     return true;
@@ -13,27 +13,28 @@ function hasRepetition(line) {
   }
 }
 
-function checkData(data) {
-  let result = 0;
-  data.forEach(array => {
-    let countAbba = 0, countAnti = 0;
-    array.forEach((str, i) => {
-      if (i % 2 === 0 || i === 0) {
-        if (hasRepetition(str)) {
-          countAbba += 1;
-        }
+function supportsTLS(array) {
+  let countAbba = 0, countAnti = 0;
+  array.forEach((str, i) => {
+    if (i % 2 === 0 || i === 0) {
+      if (hasAbba(str)) {
+        countAbba += 1;
       }
-      if (i % 2 !== 0) {
-        if (hasRepetition(str)) {
-          countAnti += 1;
-        }
+    }
+    if (i % 2 !== 0) {
+      if (hasAbba(str)) {
+        countAnti += 1;
       }
-    })
-    if (countAbba > 0 && countAnti === 0) {
-      result += 1;
     }
   })
-  console.log(result);
+  if (countAbba > 0 && countAnti === 0) {
+    return true
+  }
+}
+
+
+function checkData1(data) {
+  console.log(data.filter(value => supportsTLS(value)).length);
 };
 
-readInput(format, checkData);
+readInput(format, checkData1);
