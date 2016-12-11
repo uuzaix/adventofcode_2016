@@ -1,3 +1,4 @@
+const _ = require('underscore');
 const { readInput } = require('./helper_funcions.js')
 
 function format(line) {
@@ -13,28 +14,27 @@ function hasAbba(line) {
   }
 }
 
+function extractEven(array) {
+  return array.filter((str, i) => {
+    return i % 2 === 0
+  });
+}
+
+function extractOdd(array) {
+  return array.filter((str, i) => {
+    return i % 2 !== 0
+  });
+}
+
 function supportsTLS(array) {
-  let countAbba = 0, countAnti = 0;
-  array.forEach((str, i) => {
-    if (i % 2 === 0 || i === 0) {
-      if (hasAbba(str)) {
-        countAbba += 1;
-      }
-    }
-    if (i % 2 !== 0) {
-      if (hasAbba(str)) {
-        countAnti += 1;
-      }
-    }
-  })
-  if (countAbba > 0 && countAnti === 0) {
+  if (_.any(extractEven(array).map(hasAbba)) && !_.any(extractOdd(array).map(hasAbba))) {
     return true
   }
 }
 
 
 function checkData1(data) {
-  console.log(data.filter(value => supportsTLS(value)).length);
+  console.log(data.filter(supportsTLS).length);
 };
 
 readInput(format, checkData1);
