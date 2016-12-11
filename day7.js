@@ -65,7 +65,7 @@ function checkData1(data) {
 };
 
 function checkData2(data) {
-  console.log('Part1: ' + data.filter(supportsSSL).length);
+  console.log('Part2: ' + data.filter(supportsSSL).length);
 };
 
 readInput(format, broadcast(checkData1, checkData2));
