@@ -1,21 +1,16 @@
-const _ = require('underscore');
+const _ = require('lodash');
 const { readInput, broadcast } = require('./helper_funcions.js')
 
 function format(line) {
   return line.split(/\[|\]/);
 }
 
-function extractEven(array) {
-  return array.filter((str, i) => {
-    return i % 2 === 0
-  });
+function filterByIndex(array, f) {
+  return array.filter((str, i) => f(i))
 }
 
-function extractOdd(array) {
-  return array.filter((str, i) => {
-    return i % 2 !== 0
-  });
-}
+const extractOdd = array => filterByIndex(array, i => i % 2 !== 0)
+const extractEven = array => filterByIndex(array, i => i % 2 === 0)
 
 function hasAbba(line) {
   const rep = line.match(/(.)(.)\2\1/);
@@ -27,9 +22,7 @@ function hasAbba(line) {
 }
 
 function supportsTLS(array) {
-  if (_.any(extractEven(array).map(hasAbba)) && !_.any(extractOdd(array).map(hasAbba))) {
-    return true
-  }
+  return _.some(extractEven(array).map(hasAbba)) && !_.some(extractOdd(array).map(hasAbba))     
 }
 
 function findAbaInStr(line) {
