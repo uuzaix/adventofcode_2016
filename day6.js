@@ -21,11 +21,20 @@ function sortByAlph(array) {
   return joined;
 }
 
-function part1(array) {
-   const result = transpose(array).map(a => sortByAlph(a).sort((a, b) => {
-    return b.length - a.length
-  })[0][0]).join('');
-  console.log('Part 1: ', result);
+function sortAsc(a,b) {
+  return a.length - b.length
+}
+function sortDesc(a,b) {
+  return b.length - a.length
 }
 
-readInput(format, part1);
+function composeWord(array, sortFunc) {
+   return transpose(array).map(a => sortByAlph(a).sort(sortFunc)[0][0]).join('');
+}
+
+function day6(array) {
+   console.log('Part 1: ', composeWord(array, sortDesc));
+   console.log('Part 2: ', composeWord(array, sortAsc));
+}
+
+readInput(format, day6);
