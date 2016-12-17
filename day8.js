@@ -1,5 +1,4 @@
-const _ = require('lodash');
-const { readInput, broadcast } = require('./helper_funcions.js')
+const { readInput } = require('./helper_funcions.js')
 
 function format(line) {
   const instr = line.split(' ');
@@ -24,20 +23,20 @@ function createBoard(width, heigth) {
   return board;
 }
 
-function rect(data, x, y) {
-  for (let row = 0; row < x; row++) {
-    for (let col = 0; col < y; y++) {
-      const newVal = data[row][col] === 0 ? 1 : 0
-      data[row][col] = newVal;
+function rect(board, x, y) {
+  for (let row = 0; row < y; row++) {
+    for (let col = 0; col < x; col++) {
+      const newVal = board[row][col] === 0 ? 1 : 0
+      board[row][col] = newVal;
     }
   }
-  return data;
+  return board;
 }
 
-function shiftRowInArr(data, rowInd, val) {
-  const temp = shiftRow(data[rowInd], val)
-  data[rowInd] = temp;
-  return data;
+function shiftRowInArr(board, rowInd, val) {
+  const temp = shiftRow(board[rowInd], val)
+  board[rowInd] = temp;
+  return board;
 }
 
 function shiftRow(row, val) {
@@ -49,19 +48,19 @@ function shiftRow(row, val) {
   return temp.slice(len - val, len).concat(temp.slice(0, len - val))
 }
 
-function shiftCol(data, col, val) {
+function shiftCol(board, col, val) {
   let temp = [];
-  data.forEach(row => temp.push(row[col]))
+  board.forEach(row => temp.push(row[col]))
   temp = shiftRow(temp, val);
-  data.forEach((row, i) => {
-    data[i][col] = temp[i]
+  board.forEach((row, i) => {
+    board[i][col] = temp[i]
   })
-  return data;
+  return board;
 }
 
-function calculate(data) {
+function calculate(board) {
   let count = 0;
-  data.forEach(row => {
+  board.forEach(row => {
     row.forEach(col => {
       count += col;
     })
@@ -69,29 +68,33 @@ function calculate(data) {
   return count;
 }
 
-function day8(input) {
-  let board = createBoard(7, 3);
-  console.log(board);
-  let data = input;
-  console.log(data);
-  data.forEach(instr => {
-    if (instr.lenght === 2) {
-      board = rect(board, instr[0], instr[1]);
-      console.log('rect', board)
-    } else if (instr[0] === 'row') {
-      board = shiftRowInArr(board, instr[1], instr[2])
-      console.log('row', board)
+function display(board) {
+  board.forEach(line => {
+    let temp = [];
+    line.forEach(char => {
+    if (char === 0){
+      temp.push('.')
     } else {
-      board = shiftCol(board, instr[1], instr[2])
-      console.log('col', board)
+      temp.push('#');
     }
+    })
+    console.log(temp.join(''))
   })
-  // return board;
-  console.log(calculate(board));
 }
 
-// readInput(format, day8);
-// console.log(createBoard(50, 6));
-// console.log(shiftRow([[0, 1, 2, 3, 4, 5],[1,2,3]], 0, 13));
-console.log(rect([[0, 0, 0], [0, 0, 0], [0, 0, 0]], 1, 1));
-// console.log(shiftCol([[0, 1, 2, 3, 4, 5], [1, 2, 3]], 1, 1));
+function day8(input) {
+  let board = createBoard(50, 6);
+  input.forEach(instr => {
+    if (instr.length === 2) {
+      board = rect(board, instr[0], instr[1]);
+    } else if (instr[0] === 'row') {
+      board = shiftRowInArr(board, instr[1], instr[2])
+    } else {
+      board = shiftCol(board, instr[1], instr[2])
+    }
+  })
+  console.log(calculate(board));
+  display(board);
+}
+
+readInput(format, day8);
