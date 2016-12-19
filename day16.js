@@ -42,3 +42,4 @@ function day16(input, length) {
 
 console.log(day16(testInput, 20));
 console.log(day16(input, 272));
+console.log(day16(input, 35651584));

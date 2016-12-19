@@ -6,15 +6,12 @@ function format(line) {
 }
 
 function calculate(arr) {
-  const newArr = arr.filter(el => {
-    return el === '.';
-  })
-  return newArr.length;
+  return arr.filter(el => el === '.').length;
 }
 
 function findNextRow(arr) {
   let nextRow = []
-  arr.forEach((el, i) => {
+  return arr.map((el, i) => {
     let section;
     if (i === 0) {
       section = ['.', el, arr[i + 1]];
@@ -24,14 +21,13 @@ function findNextRow(arr) {
       section = [arr[i - 1], el, arr[i + 1]];
     }
     if (el === '^' && calculate(section) === 1) {
-      nextRow.push('^');
+      return '^';
     } else if (el !== '^' && calculate(section) === 2) {
-      nextRow.push('^');
+      return '^';
     } else {
-      nextRow.push('.');
+      return '.';
     }
-  })
-  return nextRow;
+  });
 }
 
 function day18(data) {
