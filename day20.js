@@ -6,7 +6,7 @@ function format(line) {
 }
 
 function findMin(data) {
-  data.sort(arr => arr[0]);
+  data.sort((a, b) => a[0]-b[0]);
   let min = 0;
   data.forEach(pair => {
     if (pair[0] <= min) {
