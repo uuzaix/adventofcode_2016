@@ -6,14 +6,16 @@ function format(line) {
 }
 
 function findMin(data) {
-  data.sort((a, b) => a[0]-b[0]);
-  let min = 0;
-  data.forEach(pair => {
-    if (pair[0] <= min) {
-      min = Math.max(min, pair[1] + 1);
+  data.sort((a, b) => a[0] - b[0]);
+  const allowed = data.reduce((acc, curr) => {
+    if (curr[0] <= acc[1]) {
+      const max = Math.max(acc[1], curr[1]+1);
+      return [max, max];
+    } else {
+      return acc
     }
-  });
-  console.log(min);
+  }, [0, 0]);
+  console.log(allowed[0]);
 }
 
 readInput(format, findMin);
