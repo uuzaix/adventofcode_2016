@@ -1,4 +1,3 @@
-const _ = require('lodash');
 const { readInput } = require('./helper_funcions.js');
 
 function format(line) {
@@ -8,14 +7,13 @@ function format(line) {
 function findMin(data) {
   data.sort((a, b) => a[0] - b[0]);
   const allowed = data.reduce((acc, curr) => {
-    if (curr[0] <= acc[1]) {
-      const max = Math.max(acc[1], curr[1]+1);
-      return [max, max];
+    if (curr[0] <= acc) {
+      return Math.max(acc, curr[1]+1);
     } else {
       return acc
     }
-  }, [0, 0]);
-  console.log(allowed[0]);
+  }, 0);
+  console.log(allowed);
 }
 
 readInput(format, findMin);
