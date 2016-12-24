@@ -3,7 +3,7 @@ const { readInput, broadcast } = require('./helper_funcions.js')
 
 function format(line) {
   const [, letters, sector, checkSum] = line.match(/([a-z-]+)-([0-9]+)\[([a-z]+)\]/)
-  return [letters.replace(/-/g, '').split('').sort(), +sector, checkSum]
+  return [letters, +sector, checkSum]
 }
 
 function sortByAlph(array) {
@@ -27,20 +27,31 @@ function sortDesc(a, b) {
   }
 }
 
-function countReal(array, sortFunc) {
-  let sum = 0;
-  array.forEach(a => {
-    const fiveCommon = sortByAlph(a[0]).sort(sortFunc).slice(0, 5).map(letters => letters[0]);
-    if (a[2] === fiveCommon.join('')) {
-      sum += a[1];
-    }
-  }
-  )
-  return sum;
+function findReal(array, sortFunc) {
+  return array.filter(a => {
+    const fiveCommon = sortByAlph(a[0].replace(/-/g, '').split('').sort()).sort(sortFunc).slice(0, 5).map(letters => letters[0]);
+    return (a[2] === fiveCommon.join(''))
+  });
 }
 
 function day4(array) {
-  console.log('Part 1: ', countReal(array, sortDesc));
+  const real = findReal(array, sortDesc);
+  console.log('Part 1: ', real.length);
+  console.log('Part 2: ', rotate(real));
+}
+
+function rotate(array) {
+  const alph = "abcdefghijklmnopqrstuvwxyz";
+  return array.filter(arr => {
+    const rotatedName = arr[0].split('').map(letter => {
+      if (letter === '-') {
+        return ' '
+      } else {
+        return alph[(alph.indexOf(letter) + arr[1]) % alph.length]
+      }
+    }).join('');
+    return rotatedName === 'northpole object storage';
+  })[0][1]
 }
 
 readInput(format, day4);
